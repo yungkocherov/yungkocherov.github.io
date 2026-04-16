@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ivan Kocherov — Data Science Portfolio</title>
+  <meta name="description" content="Data Science portfolio: ML pipelines, interactive maps, AI-powered analytics tools, educational platforms.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #100F1A;
+      --bg-card: #151420;
+      --bg-elevated: #1A1928;
+      --border: #1E1D2A;
+      --border-hover: #2D2C3E;
+      --text: #F0EFF5;
+      --text-muted: #9896A8;
+      --text-dim: #5C5A6E;
+      --accent-1: #8B5CF6;
+      --accent-2: #06B6D4;
+      --gradient: linear-gradient(135deg, #8B5CF6, #06B6D4);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      position: relative;
+    }
+
+    ::selection { background: var(--accent-1); color: white; }
+
+    /* Math formulas background */
+    .bg-pattern {
+      position: fixed;
+      inset: 0;
+      background-image: url('assets/bg-math.jpg');
+      background-repeat: repeat;
+      background-size: 600px;
+      opacity: 0.08;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Top gradient glow */
+    .glow {
+      position: fixed;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 550px;
+      background: radial-gradient(ellipse, rgba(139,92,246,0.15) 0%, rgba(6,182,212,0.07) 40%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 72px 32px 120px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Nav ── */
+    .breadcrumb {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-bottom: 64px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .breadcrumb .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gradient);
+      flex-shrink: 0;
+    }
+    .breadcrumb span { color: var(--text-muted); }
+
+    /* ── Hero ── */
+    .hero {
+      margin-bottom: 80px;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .hero-left {}
+
+    .hero-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .hero-label::before {
+      content: "";
+      width: 20px; height: 1px;
+      background: var(--gradient);
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+      line-height: 1.15;
+      color: var(--text);
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 15.5px;
+      line-height: 1.7;
+    }
+    .hero p strong { color: var(--text); font-weight: 500; }
+
+    /* About card inside hero */
+    .hero-about {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+    }
+    .hero-about h3 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-2);
+      margin-bottom: 16px;
+    }
+    .hero-about p {
+      color: var(--text-muted);
+      font-size: 13.5px;
+      line-height: 1.65;
+      margin-bottom: 12px;
+    }
+    .hero-about p:last-child { margin-bottom: 0; }
+    .hero-about p strong { color: var(--text); font-weight: 500; }
+
+    .hero-links {
+      display: flex;
+      gap: 8px;
+      margin-top: 36px;
+      flex-wrap: wrap;
+    }
+    .hero-links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-card);
+    }
+    .hero-links a:hover {
+      color: var(--text);
+      border-color: var(--border-hover);
+      background: var(--bg-elevated);
+    }
+    .hero-links a .arrow {
+      color: var(--accent-1);
+      transition: transform 0.15s ease;
+      font-size: 11px;
+    }
+    .hero-links a:hover .arrow { transform: translateX(2px); }
+
+
+    /* ── Section label ── */
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .section-label::after {
+      content: "";
+      flex: 1; height: 1px;
+      background: linear-gradient(90deg, var(--border) 0%, transparent 100%);
+    }
+
+    /* ── Project cards ── */
+    .projects {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .project {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 48px 1fr auto;
+      gap: 24px;
+      align-items: start;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      overflow: hidden;
+    }
+    .project::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      padding: 1px;
+      background: var(--gradient);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      pointer-events: none;
+    }
+    .project:hover::before { opacity: 0.5; }
+    .project:hover {
+      background: var(--bg-elevated);
+      transform: translateY(-1px);
+    }
+    .project:hover .project-arrow {
+      transform: translateX(4px);
+      color: var(--accent-1);
+    }
+    .project:hover .project-num { color: var(--accent-2); }
+
+    .project-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-dim);
+      padding-top: 3px;
+      transition: color 0.2s ease;
+    }
+
+    .project-body { min-width: 0; }
+
+    .project-title {
+      font-size: 19px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .project-desc {
+      color: var(--text-muted);
+      font-size: 14.5px;
+      line-height: 1.65;
+      margin-bottom: 18px;
+    }
+
+    .project-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .project-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      background: rgba(139, 92, 246, 0.08);
+      border: 1px solid rgba(139, 92, 246, 0.15);
+      padding: 3px 10px;
+      border-radius: 6px;
+    }
+
+    .project-stat {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .project-stat .val {
+      color: var(--accent-2);
+      font-weight: 500;
+    }
+
+    .project-arrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 20px;
+      color: var(--text-dim);
+      padding-top: 3px;
+      transition: transform 0.2s ease, color 0.15s ease;
+    }
+
+    /* ── Skills ── */
+    .skills { margin-top: 72px; }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 8px;
+    }
+    .skill-item {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+      padding: 12px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: border-color 0.15s ease;
+    }
+    .skill-item:hover { border-color: var(--border-hover); }
+    .skill-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--gradient);
+      flex-shrink: 0;
+    }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 80px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-dim);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer .gradient-line {
+      width: 40px; height: 2px;
+      background: var(--gradient);
+      border-radius: 1px;
+      opacity: 0.5;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 720px) {
+      .container { padding: 48px 20px 80px; }
+      .hero { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 30px; }
+      .project { padding: 24px 20px; grid-template-columns: 36px 1fr; gap: 16px; }
+      .project-arrow { display: none; }
+      .skills-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-pattern"></div>
+  <div class="glow"></div>
+
+  <div class="container">
+    <div class="breadcrumb">
+      <span class="dot"></span>
+      <span>ivan kocherov</span>
+      <span style="color: var(--text-dim);">/</span>
+      <span style="color: var(--text-dim);">portfolio</span>
+    </div>
+
+    <!-- ── Hero + About ── -->
+    <section class="hero">
+      <div class="hero-left">
+        <div class="hero-label">data science & analytics</div>
+        <h1>Ivan Kocherov</h1>
+        <p>Строю end-to-end проекты на стыке данных и продукта: <strong>ML-модели</strong>, <strong>feature engineering</strong>, <strong>data pipelines</strong> и интерактивные интерфейсы для их подачи. Все идеи, архитектура и постановка задач &mdash; мои; код пишу в паре с AI.</p>
+        <div class="hero-links">
+          <a href="mailto:ineedletter@gmail.com"><span class="arrow">&rarr;</span> email</a>
+          <a href="https://github.com/yungkocherov"><span class="arrow">&rarr;</span> github</a>
+          <a href="https://t.me/yan_kocherov"><span class="arrow">&rarr;</span> telegram</a>
+        </div>
+      </div>
+      <div class="hero-about">
+        <h3>Фокус</h3>
+        <p><strong>ML и временные ряды</strong> &mdash; feature engineering (261 фича), панельные модели, LightGBM, прогнозирование.</p>
+        <p><strong>Геоданные</strong> &mdash; PostGIS, PMTiles, MapLibre, пространственный анализ на 900K+ полигонов.</p>
+        <p><strong>NLP</strong> &mdash; извлечение сущностей, классификация текстов, геокодинг из свободного текста.</p>
+        <p><strong>LLM-интеграции</strong> &mdash; мульти-провайдерные AI-агенты для фильтрации и оценки данных.</p>
+      </div>
+    </section>
+
+    <!-- ── Projects ── -->
+    <div class="section-label">projects</div>
+    <div class="projects">
+
+      <!-- 01 mushroom-map -->
+      <a class="project" href="https://github.com/yungkocherov/mushroom_map" target="_blank" rel="noopener">
+        <div class="project-num">01</div>
+        <div class="project-body">
+          <div class="project-title">Mushroom Map</div>
+          <div class="project-desc">Интерактивная грибная карта Ленинградской области. 913K лесных полигонов из ФГИС ЛК раскрашены по породе, бонитету и возрасту. Клик по лесу &mdash; попап с теоретическими видами грибов (из справочника &laquo;вид &harr; тип леса&raquo;) и эмпирическими наблюдениями из VK. Поиск по виду гриба и по месту, сезонный фильтр, наложение водоохранных зон и ООПТ.</div>
+          <div class="project-meta">
+            <div class="project-tags">
+              <span class="tag">PostGIS</span>
+              <span class="tag">FastAPI</span>
+              <span class="tag">React</span>
+              <span class="tag">MapLibre GL</span>
+              <span class="tag">PMTiles</span>
+              <span class="tag">Docker</span>
+            </div>
+            <div class="project-stat"><span class="val">913K</span> polygons</div>
+          </div>
+        </div>
+        <div class="project-arrow">&rarr;</div>
+      </a>
+
+      <!-- 02 mushroom-parser -->
+      <a class="project" href="https://github.com/yungkocherov/mushroom_parser_ai" target="_blank" rel="noopener">
+        <div class="project-num">02</div>
+        <div class="project-body">
+          <div class="project-title">Mushroom Forecast</div>
+          <div class="project-desc">ML-пайплайн для прогнозирования грибного сезона. Собирает посты из VK-групп по 5 городам за 8 лет, классифицирует фото, нормализует количество находок по аудитории и дню недели. 261 погодная фича: температурные лаги, накопленные осадки, влажность почвы (ERA5), GDD, паттерн &laquo;дождь&rarr;тепло&raquo;, климатические аномалии. 5 панельных LightGBM-моделей по группам видов (болетовые, лисичковые, опята, весенние).</div>
+          <div class="project-meta">
+            <div class="project-tags">
+              <span class="tag">Python</span>
+              <span class="tag">LightGBM</span>
+              <span class="tag">VK API</span>
+              <span class="tag">Open-Meteo</span>
+              <span class="tag">ERA5</span>
+              <span class="tag">pandas</span>
+            </div>
+            <div class="project-stat"><span class="val">261</span> features</div>
+          </div>
+        </div>
+        <div class="project-arrow">&rarr;</div>
+      </a>
+
+      <!-- 03 brand-events -->
+      <a class="project" href="https://github.com/yungkocherov/Brand-Events-Finder" target="_blank" rel="noopener">
+        <div class="project-num">03</div>
+        <div class="project-body">
+          <div class="project-title">Brand Events Finder</div>
+          <div class="project-desc">Веб-сервис для поиска значимых событий по брендам: ребрендинги, скандалы, уход с рынка, новые продукты. AI-агент фильтрует результаты DuckDuckGo, извлекает даты публикаций, оценивает влияние на бизнес (1-5) и тональность. 4 LLM-провайдера (Mistral, OpenAI, Claude, Gemini). Экспорт в CSV с dummy-переменными по дням/неделям/месяцам &mdash; готовый датасет для моделей. 101 тест.</div>
+          <div class="project-meta">
+            <div class="project-tags">
+              <span class="tag">FastAPI</span>
+              <span class="tag">LLM agents</span>
+              <span class="tag">NLP</span>
+              <span class="tag">DuckDuckGo</span>
+              <span class="tag">pytest</span>
+            </div>
+            <div class="project-stat"><span class="val">4</span> LLM providers</div>
+          </div>
+        </div>
+        <div class="project-arrow">&rarr;</div>
+      </a>
+
+      <!-- 04 easy-education -->
+      <a class="project" href="https://yungkocherov.github.io/Easy-Education/" target="_blank" rel="noopener">
+        <div class="project-num">04</div>
+        <div class="project-body">
+          <div class="project-title">Easy Education</div>
+          <div class="project-desc">Интерактивный учебник по Data Science, ML и Deep Learning на русском языке. 57 тем в 7 категориях: от описательной статистики и A/B-тестов до трансформеров и генеративных моделей. Каждая тема &mdash; аналогия для интуиции, пошаговые примеры с числами, интерактивная симуляция на Chart.js/Canvas, готовый Python-код. 3 маршрута обучения: аналитик, ML-инженер, DL-инженер.</div>
+          <div class="project-meta">
+            <div class="project-tags">
+              <span class="tag">Vanilla JS</span>
+              <span class="tag">Chart.js</span>
+              <span class="tag">KaTeX</span>
+              <span class="tag">Canvas API</span>
+            </div>
+            <div class="project-stat"><span class="val">57</span> topics</div>
+          </div>
+        </div>
+        <div class="project-arrow">&rarr;</div>
+      </a>
+
+    </div>
+
+    <!-- ── Toolkit ── -->
+    <div class="skills">
+      <div class="section-label">toolkit</div>
+      <div class="skills-grid">
+        <div class="skill-item"><span class="skill-dot"></span>Feature Engineering</div>
+        <div class="skill-item"><span class="skill-dot"></span>Time Series</div>
+        <div class="skill-item"><span class="skill-dot"></span>Python / pandas</div>
+        <div class="skill-item"><span class="skill-dot"></span>scikit-learn / XGBoost</div>
+        <div class="skill-item"><span class="skill-dot"></span>LightGBM / CatBoost</div>
+        <div class="skill-item"><span class="skill-dot"></span>Prophet / ARIMA</div>
+        <div class="skill-item"><span class="skill-dot"></span>Econometrics</div>
+        <div class="skill-item"><span class="skill-dot"></span>A/B tests / Stats</div>
+        <div class="skill-item"><span class="skill-dot"></span>SQL / PostGIS</div>
+        <div class="skill-item"><span class="skill-dot"></span>EDA / Plotly</div>
+        <div class="skill-item"><span class="skill-dot"></span>NLP</div>
+        <div class="skill-item"><span class="skill-dot"></span>LLM APIs</div>
+        <div class="skill-item"><span class="skill-dot"></span>FastAPI / Flask</div>
+        <div class="skill-item"><span class="skill-dot"></span>MapLibre GL / geo</div>
+        <div class="skill-item"><span class="skill-dot"></span>Docker</div>
+      </div>
+    </div>
+
+    <!-- ── Footer ── -->
+    <footer>
+      <span>ivan kocherov &mdash; 2026</span>
+      <span class="gradient-line"></span>
+      <span>built with care</span>
+    </footer>
+  </div>
+</body>
+</html>
