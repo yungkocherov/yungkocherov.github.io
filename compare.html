@@ -114,6 +114,24 @@
 
     .sep { width: 1px; height: 24px; background: rgba(255,255,255,0.1); flex-shrink: 0; }
 
+    /* Frame styles on .content */
+    .frame-thin   { border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; }
+    .frame-glow   { border: 1px solid rgba(139,92,246,0.4); border-radius: 16px;
+                    box-shadow: 0 0 24px rgba(139,92,246,0.12), inset 0 0 24px rgba(139,92,246,0.04); }
+    .frame-grad   { border-radius: 16px; position: relative; }
+    .frame-grad::before { content: ""; position: absolute; inset: -1px; border-radius: 17px; padding: 1px;
+      background: linear-gradient(135deg, rgba(139,92,246,0.6), rgba(6,182,212,0.4));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
+    .frame-corners { position: relative; }
+    .frame-corners::before, .frame-corners::after { content: ""; position: absolute;
+      width: 28px; height: 28px; pointer-events: none; }
+    .frame-corners::before { top: 0; left: 0;
+      border-top: 2px solid rgba(139,92,246,0.7); border-left: 2px solid rgba(139,92,246,0.7); border-radius: 4px 0 0 0; }
+    .frame-corners::after  { bottom: 0; right: 0;
+      border-bottom: 2px solid rgba(6,182,212,0.7); border-right: 2px solid rgba(6,182,212,0.7); border-radius: 0 0 4px 0; }
+    .frame-dashed { border: 1px dashed rgba(255,255,255,0.12); border-radius: 16px; }
+
     /* Content */
     .content {
       position: relative;
@@ -197,6 +215,15 @@
     <button class="btn efx" onclick="setEffect('fx-corners', this)">Уголки</button>
     <button class="btn efx" onclick="setEffect('fx-scanlines', this)">Сканлайны</button>
 
+    <div class="sep"></div>
+    <label>Рамка:</label>
+    <button class="btn frm active" onclick="setFrame('', this)">Нет</button>
+    <button class="btn frm" onclick="setFrame('frame-thin', this)">Тонкая</button>
+    <button class="btn frm" onclick="setFrame('frame-glow', this)">Свечение</button>
+    <button class="btn frm" onclick="setFrame('frame-grad', this)">Градиент</button>
+    <button class="btn frm" onclick="setFrame('frame-corners', this)">Уголки</button>
+    <button class="btn frm" onclick="setFrame('frame-dashed', this)">Пунктир</button>
+
     <div class="opacity-wrap">
       <label>Opacity:</label>
       <input type="range" id="opSlider" min="1" max="30" step="1" value="7"
@@ -259,6 +286,13 @@
     function setEffect(cls, btn) {
       fx.className = 'fx' + (cls ? ' ' + cls : '');
       document.querySelectorAll('.efx').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    const content = document.querySelector('.content');
+    function setFrame(cls, btn) {
+      content.className = 'content' + (cls ? ' ' + cls : '');
+      document.querySelectorAll('.frm').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
     }
 

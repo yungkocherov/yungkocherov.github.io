@@ -125,17 +125,12 @@
     }
     .hero p strong { color: var(--text); font-weight: 500; }
 
-    /* About cards inside hero */
-    .hero-right {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
+    /* About card inside hero */
     .hero-about {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 20px 24px;
+      padding: 28px;
     }
     .hero-about h3 {
       font-family: 'JetBrains Mono', monospace;
@@ -369,29 +364,18 @@
       opacity: 0.5;
     }
 
-    /* Telegram handle popup */
-    .tg-popup {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: var(--accent-2);
-      background: var(--bg-card);
-      border: 1px solid rgba(6,182,212,0.25);
-      border-radius: 8px;
-      padding: 8px 14px;
-      margin-top: 8px;
-      opacity: 0;
-      max-height: 0;
-      overflow: hidden;
-      transition: opacity 0.2s ease, max-height 0.2s ease;
-      pointer-events: none;
-    }
-    .tg-popup.show {
-      opacity: 1;
-      max-height: 48px;
-      pointer-events: auto;
+    /* Subtle glow blobs */
+    .glow {
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 1;
+      background:
+        radial-gradient(ellipse 380px 280px at 12% 10%, rgba(139,92,246,0.07) 0%, transparent 65%),
+        radial-gradient(ellipse 280px 260px at 82% 8%,  rgba(6,182,212,0.05)  0%, transparent 65%),
+        radial-gradient(ellipse 320px 240px at 55% 28%, rgba(139,92,246,0.05) 0%, transparent 65%),
+        radial-gradient(ellipse 360px 280px at 8%  60%, rgba(6,182,212,0.05)  0%, transparent 65%),
+        radial-gradient(ellipse 300px 260px at 90% 55%, rgba(139,92,246,0.06) 0%, transparent 65%),
+        radial-gradient(ellipse 340px 260px at 35% 80%, rgba(6,182,212,0.04)  0%, transparent 65%),
+        radial-gradient(ellipse 260px 220px at 72% 88%, rgba(139,92,246,0.05) 0%, transparent 65%);
     }
 
     /* ── Responsive ── */
@@ -407,7 +391,7 @@
 </head>
 <body>
   <div class="bg-pattern"></div>
-
+  <div class="glow"></div>
 
   <div class="container">
     <div class="breadcrumb">
@@ -426,23 +410,15 @@
         <div class="hero-links">
           <a href="mailto:ineedletter@gmail.com"><span class="arrow">&rarr;</span> email</a>
           <a href="https://github.com/yungkocherov"><span class="arrow">&rarr;</span> github</a>
-          <a href="https://t.me/yan_kocherov" onclick="showTgHandle()" target="_blank" rel="noopener"><span class="arrow">&rarr;</span> telegram</a>
+          <a href="https://t.me/yan_kocherov" target="_blank" rel="noopener"><span class="arrow">&rarr;</span> tg: @yan_kocherov</a>
         </div>
-        <div class="tg-popup" id="tg-popup">&#8250; @yan_kocherov</div>
       </div>
-      <div class="hero-right">
-        <div class="hero-about">
-          <h3>Коммерческие проекты</h3>
-          <p><strong>Аналитика и BI</strong> &mdash; сегментация клиентов, прогнозирование спроса, A/B-тесты, дашборды.</p>
-          <p><strong>Data pipelines</strong> &mdash; сбор, чистка и агрегация данных, автоматизация отчётности.</p>
-          <p><strong>ML в продакшне</strong> &mdash; модели оттока, скоринг, оценка эффективности рекламных кампаний.</p>
-        </div>
-        <div class="hero-about">
-          <h3>Пет-проекты</h3>
-          <p><strong>ML и временные ряды</strong> &mdash; feature engineering (261 фича), панельные модели, LightGBM.</p>
-          <p><strong>Геоданные</strong> &mdash; PostGIS, PMTiles, MapLibre, 900K+ полигонов.</p>
-          <p><strong>NLP и LLM</strong> &mdash; извлечение сущностей, мульти-провайдерные AI-агенты.</p>
-        </div>
+      <div class="hero-about">
+        <h3>Фокус</h3>
+        <p><strong>ML и временные ряды</strong> &mdash; feature engineering (261 фича), панельные модели, LightGBM, прогнозирование.</p>
+        <p><strong>Геоданные</strong> &mdash; PostGIS, PMTiles, MapLibre, пространственный анализ на 900K+ полигонов.</p>
+        <p><strong>NLP</strong> &mdash; извлечение сущностей, классификация текстов, геокодинг из свободного текста.</p>
+        <p><strong>LLM-интеграции</strong> &mdash; мульти-провайдерные AI-агенты для фильтрации и оценки данных.</p>
       </div>
     </section>
 
@@ -562,13 +538,5 @@
       <span>built with care</span>
     </footer>
   </div>
-  <script>
-    function showTgHandle() {
-      const el = document.getElementById('tg-popup');
-      el.classList.add('show');
-      clearTimeout(el._t);
-      el._t = setTimeout(() => el.classList.remove('show'), 5000);
-    }
-  </script>
 </body>
 </html>
