@@ -108,8 +108,8 @@
       position: absolute;
       bottom: 0; right: 0;
       width: 52px; height: 52px;
-      border-bottom: 2.5px solid rgba(6,182,212,0.65);
-      border-right: 2.5px solid rgba(6,182,212,0.65);
+      border-bottom: 2.5px solid rgba(139,92,246,0.65);
+      border-right: 2.5px solid rgba(139,92,246,0.65);
       border-radius: 0 0 2px 0;
       pointer-events: none;
     }
@@ -208,8 +208,9 @@
     /* ── Section label ── */
     .section-label {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: var(--text-dim);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.12em;
       margin-bottom: 24px;
@@ -219,8 +220,8 @@
     }
     .section-label::after {
       content: "";
-      flex: 1; height: 1px;
-      background: linear-gradient(90deg, var(--border) 0%, transparent 100%);
+      flex: 1; height: 1.5px;
+      background: linear-gradient(90deg, var(--border-hover) 0%, transparent 100%);
     }
 
     /* ── Project cards ── */
