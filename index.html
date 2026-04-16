@@ -52,15 +52,18 @@
       z-index: 0;
     }
 
-    /* Top gradient glow */
+    /* Gradient glow on background, aligned with content area */
     .glow {
-      position: fixed;
-      top: -200px;
+      position: absolute;
+      top: 0;
       left: 50%;
       transform: translateX(-50%);
-      width: 900px;
-      height: 550px;
-      background: radial-gradient(ellipse, rgba(139,92,246,0.15) 0%, rgba(6,182,212,0.07) 40%, transparent 70%);
+      width: 1100px;
+      height: 100%;
+      background:
+        radial-gradient(ellipse 1100px 900px at 50% 15%, rgba(139,92,246,0.13) 0%, transparent 70%),
+        radial-gradient(ellipse 900px 800px at 40% 45%, rgba(6,182,212,0.07) 0%, transparent 65%),
+        radial-gradient(ellipse 900px 800px at 55% 70%, rgba(139,92,246,0.09) 0%, transparent 65%);
       pointer-events: none;
       z-index: 0;
     }
@@ -211,7 +214,7 @@
     }
 
     /* ── Project cards ── */
-    .projects {
+    .pet projects {
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -419,8 +422,8 @@
     </section>
 
     <!-- ── Projects ── -->
-    <div class="section-label">projects</div>
-    <div class="projects">
+    <div class="section-label">pet projects</div>
+    <div class="pet projects">
 
       <!-- 01 mushroom-map -->
       <a class="project" href="https://github.com/yungkocherov/mushroom_map" target="_blank" rel="noopener">
