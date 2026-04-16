@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Background Compare</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0a0a0f;
+      color: #e2e8f0;
+      font-family: system-ui, sans-serif;
+      min-height: 100vh;
+    }
+
+    /* Controls */
+    .controls {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(10, 10, 15, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .controls label {
+      font-size: 12px;
+      color: #94a3b8;
+      white-space: nowrap;
+    }
+
+    .btn {
+      padding: 6px 14px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      color: #cbd5e1;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .btn:hover { background: rgba(255,255,255,0.1); }
+    .btn.active {
+      background: rgba(139,92,246,0.25);
+      border-color: rgba(139,92,246,0.5);
+      color: #e2e8f0;
+    }
+
+    .opacity-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+    }
+    .opacity-wrap input[type=range] { width: 100px; }
+    .opacity-val { font-size: 12px; color: #94a3b8; width: 32px; }
+
+    /* Background layer */
+    .bg-pattern {
+      position: fixed;
+      inset: 0;
+      background-repeat: repeat;
+      background-size: 600px;
+      opacity: 0.1;
+      pointer-events: none;
+      z-index: 0;
+      transition: opacity 0.3s;
+    }
+
+    /* Effect overlays */
+    .fx {
+      position: fixed; inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .fx-glow { background:
+      radial-gradient(ellipse 700px 500px at 50% 30%, rgba(139,92,246,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 600px 400px at 45% 65%, rgba(6,182,212,0.07) 0%, transparent 65%);
+    }
+    .fx-grid { background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .fx-dots { background-image: radial-gradient(circle, rgba(255,255,255,0.12) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+    .fx-vignette { background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 50%, rgba(0,0,0,0.6) 100%); }
+    .fx-corners::before, .fx-corners::after {
+      content: "";
+      position: fixed;
+      width: 120px; height: 120px;
+      pointer-events: none;
+    }
+    .fx-corners::before {
+      top: 80px; left: 0;
+      border-top: 1px solid rgba(139,92,246,0.35);
+      border-left: 1px solid rgba(139,92,246,0.35);
+    }
+    .fx-corners::after {
+      bottom: 0; right: 0;
+      border-bottom: 1px solid rgba(6,182,212,0.35);
+      border-right: 1px solid rgba(6,182,212,0.35);
+    }
+    .fx-scanlines { background-image: repeating-linear-gradient(
+      0deg, transparent, transparent 3px, rgba(0,0,0,0.08) 3px, rgba(0,0,0,0.08) 4px
+    ); }
+
+    .sep { width: 1px; height: 24px; background: rgba(255,255,255,0.1); flex-shrink: 0; }
+
+    /* Content */
+    .content {
+      position: relative;
+      z-index: 10;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 100px 32px 60px;
+    }
+
+    h1 { font-size: 48px; font-weight: 700; margin-bottom: 12px; }
+    .sub { color: #94a3b8; font-size: 18px; margin-bottom: 40px; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .card h3 { font-size: 15px; margin-bottom: 8px; }
+    .card p { font-size: 13px; color: #94a3b8; line-height: 1.6; }
+
+    .bg-name {
+      position: fixed;
+      bottom: 20px;
+      right: 24px;
+      z-index: 100;
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-pattern" id="bg"></div>
+  <div class="fx" id="fx"></div>
+
+  <div class="controls">
+    <label>Фон:</label>
+
+    <button class="btn" onclick="setBg('assets/bg-math.jpg', 600, 0.08, this)">
+      1 — Math (original)
+    </button>
+    <button class="btn" onclick="setBg('assets/bg-ds-doodle.jpg', 600, 0.06, this)">
+      2 — DS Doodle (orange)
+    </button>
+    <button class="btn" onclick="setBg('assets/bg-ds-lines.jpg', 500, 0.07, this)">
+      3 — DS Lines (minimal)
+    </button>
+    <button class="btn" onclick="setBg('assets/bg-math-dark.webp', 800, 0.09, this)">
+      4 — Math Dark 1
+    </button>
+    <button class="btn active" onclick="setBg('assets/bg-math-dark2.jpg', 960, 0.07, this)">
+      5 — Math Dark 2
+    </button>
+    <button class="btn" onclick="setBg('assets/bg-math-lines.jpg', 600, 0.12, this)">
+      6 — Math Lines (seamless)
+    </button>
+    <button class="btn" onclick="setBg('assets/bg-school-dark.avif', 600, 0.12, this)">
+      7 — School Dark (seamless)
+    </button>
+    <button class="btn" onclick="setBg('assets/bg-chalk.jpg', 600, 0.1, this)">
+      8 — Chalk Board
+    </button>
+
+    <div class="sep"></div>
+    <label>Эффект:</label>
+    <button class="btn efx active" onclick="setEffect('', this)">Нет</button>
+    <button class="btn efx" onclick="setEffect('fx-glow', this)">Пятна</button>
+    <button class="btn efx" onclick="setEffect('fx-grid', this)">Сетка</button>
+    <button class="btn efx" onclick="setEffect('fx-dots', this)">Точки</button>
+    <button class="btn efx" onclick="setEffect('fx-vignette', this)">Виньетка</button>
+    <button class="btn efx" onclick="setEffect('fx-corners', this)">Уголки</button>
+    <button class="btn efx" onclick="setEffect('fx-scanlines', this)">Сканлайны</button>
+
+    <div class="opacity-wrap">
+      <label>Opacity:</label>
+      <input type="range" id="opSlider" min="1" max="30" step="1" value="7"
+             oninput="setOpacity(this.value)">
+      <span class="opacity-val" id="opVal">0.07</span>
+    </div>
+  </div>
+
+  <div class="content">
+    <h1>Ivan Kocherov</h1>
+    <p class="sub">data science & analytics</p>
+
+    <div class="cards">
+      <div class="card">
+        <h3>mushroom-map</h3>
+        <p>Интерактивная карта грибных мест Ленобласти. PostGIS + FastAPI + MapLibre GL.</p>
+      </div>
+      <div class="card">
+        <h3>mushroom forecast</h3>
+        <p>Прогноз урожайности грибов по метеоданным. Time series + feature engineering.</p>
+      </div>
+      <div class="card">
+        <h3>brand events finder</h3>
+        <p>NLP-пайплайн для поиска брендовых событий в соцсетях. Hugging Face + FastAPI.</p>
+      </div>
+      <div class="card">
+        <h3>easy education</h3>
+        <p>Интерактивный учебник DS/ML/DL с симуляциями прямо в браузере.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-name" id="bgName">assets/bg-math-dark2.jpg</div>
+
+  <script>
+    const bg = document.getElementById('bg');
+    const opSlider = document.getElementById('opSlider');
+    const opVal = document.getElementById('opVal');
+    const bgName = document.getElementById('bgName');
+
+    // Set initial state
+    bg.style.backgroundImage = "url('assets/bg-math-dark2.jpg')";
+    bg.style.backgroundSize = '960px';
+    bg.style.opacity = '0.07';
+
+    const fx = document.getElementById('fx');
+
+    function setBg(url, size, opacity, btn) {
+      bg.style.backgroundImage = `url('${url}')`;
+      bg.style.backgroundSize = size + 'px';
+      bg.style.opacity = opacity;
+      opSlider.value = Math.round(opacity * 100);
+      opVal.textContent = opacity.toFixed(2);
+      bgName.textContent = url;
+
+      document.querySelectorAll('.btn:not(.efx)').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function setEffect(cls, btn) {
+      fx.className = 'fx' + (cls ? ' ' + cls : '');
+      document.querySelectorAll('.efx').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function setOpacity(val) {
+      const v = (val / 100).toFixed(2);
+      bg.style.opacity = v;
+      opVal.textContent = v;
+    }
+  </script>
+</body>
+</html>
