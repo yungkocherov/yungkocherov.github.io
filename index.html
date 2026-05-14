@@ -343,6 +343,45 @@
       transition: transform 0.2s ease, color 0.15s ease;
     }
 
+    /* Stretched-link overlay: card click -> github, button click -> live site */
+    .project-cover {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      border-radius: inherit;
+      text-indent: -9999px;
+      overflow: hidden;
+    }
+    .project-cta {
+      position: relative;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text);
+      text-decoration: none;
+      padding: 8px 14px;
+      background: rgba(139, 92, 246, 0.12);
+      border: 1px solid rgba(139, 92, 246, 0.32);
+      border-radius: 8px;
+      margin-bottom: 18px;
+      transition: all 0.15s ease;
+      width: fit-content;
+    }
+    .project-cta:hover {
+      background: rgba(139, 92, 246, 0.22);
+      border-color: rgba(139, 92, 246, 0.55);
+    }
+    .project-cta .arrow {
+      color: var(--accent-1);
+      transition: transform 0.15s ease;
+      font-size: 11px;
+    }
+    .project-cta:hover .arrow { transform: translateX(2px); }
+
     /* ── Skills ── */
     .skills { margin-top: 72px; }
     .skills-grid {
@@ -457,9 +496,11 @@
     <div class="pet projects">
 
       <!-- 01 geobiom -->
-      <a class="project" href="https://geobiom.ru/" target="_blank" rel="noopener">
+      <div class="project">
+        <a class="project-cover" href="https://github.com/yungkocherov/mushroom_map" target="_blank" rel="noopener" aria-label="GitHub репозиторий Geobiom">GitHub</a>
         <div class="project-num">01</div>
         <div class="project-body">
+          <a class="project-cta" href="https://geobiom.ru/" target="_blank" rel="noopener">geobiom.ru<span class="arrow">&rarr;</span></a>
           <div class="project-title">Geobiom &mdash; лес Ленобласти как атлас</div>
           <div class="project-desc">Открытый проект про лес Ленобласти, который вырос в живой сервис на <strong>geobiom.ru</strong>. 1.2 млн выделов из ФГИС ЛК раскрашены по породе, бонитету и возрасту; 13 слоёв с PMTiles &mdash; ООПТ, болота, реки, hillshade, почвы. Клик по выделу &mdash; виды грибов по типу леса. Индекс плодоношения по 18 районам и личные точки сбора в кабинете. Сигнал из 69k VK-постов через Natasha NER.</div>
           <div class="project-meta">
@@ -475,7 +516,7 @@
           </div>
         </div>
         <div class="project-arrow">&rarr;</div>
-      </a>
+      </div>
 
       <!-- 02 mushroom-parser -->
       <a class="project" href="https://github.com/yungkocherov/mushroom_parser_ai" target="_blank" rel="noopener">
